@@ -8,7 +8,7 @@ import java.util.function.BiConsumer;
 /**
  * BiConsumer学习
  *
- * @author lishuang
+ * @author ting
  * @version 1.0
  * @date 2020/12/15
  */
@@ -23,7 +23,7 @@ public class BiConsumerLearn {
         map.forEach((key, value) -> {
             System.out.println(key + "---" + value);
         });
-
+        integerBiConsumer.andThen((v1, v2) -> System.out.println(v1 * v2)).accept(10, 20);
     }
 
 }

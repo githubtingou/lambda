@@ -5,7 +5,7 @@ import java.util.function.BiPredicate;
 /**
  * Bipredicate学习
  *
- * @author lishuang
+ * @author ting
  * @version 1.0
  * @date 2020/12/15
  */
