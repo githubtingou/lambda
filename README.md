@@ -48,31 +48,31 @@ map.forEach((key, value) -> System.out.println("key:" + key + "----value:" + val
 function：函数接口，主要用于不同类型转换；经典的使用场景就是Stream中的map方法。
 Function<T, R>  泛型T代表的是的要转换的入参；R泛型是要输出的返参
 
-### 方法
+### 方法及代码示例
 
-- apply（核心方法）
+####  apply（核心方法）
 
   ```java
-  R apply(T t)：具体执行逻辑将入参泛型T转化为泛型R
+R apply(T t)：具体执行逻辑将入参泛型T转化为泛型R
   示例：
   Function<String,Integer> strToInt = Integer::parseInt;
   Integer apply = strToInt.apply("18");
   System.out.println(apply);
   ```
 
-- andThen
+#### andThen
 
   ```java
-  default <V> Function<T, V> andThen(Function<? super R, ? extends V> after)  ：apply方法的扩展，执行顺序-先执行Function本身的apply方法，后执行andThen里面的apply方法
+default <V> Function<T, V> andThen(Function<? super R, ? extends V> after)  ：apply方法的扩展，执行顺序-先执行Function本身的apply方法，后执行andThen里面的apply方法
   ```
 
-- compose
+#### compose
 
   ```java
-  default <V> Function<V, R> compose(Function<? super V, ? extends T> before)：apply方法的扩展，执行顺序和andThen相反-先执行compose里面的apply方法，后执行Function本身的apply方法
+default <V> Function<V, R> compose(Function<? super V, ? extends T> before)：apply方法的扩展，执行顺序和andThen相反-先执行compose里面的apply方法，后执行Function本身的apply方法
   ```
 
-- andThen和compose方法比较
+#### andThen和compose方法比较
 
   ```java
   Function<Integer, Integer> multiply10 = i -> {
@@ -95,7 +95,7 @@ Function<T, R>  泛型T代表的是的要转换的入参；R泛型是要输出�
 
   
 
-- identity:返回自身
+#### identity:返回自身
 
   ```java
   List<User> list = new ArrayList<>();
@@ -113,11 +113,43 @@ Function<T, R>  泛型T代表的是的要转换的入参；R泛型是要输出�
   collect1.forEach((k, v) -> System.out.println("------------------" + k + "+" + v));
   ```
 
-## BiFunction
+### BiFunction
 
-### 简介
+#### 简介
 
 Function接口的增强版，用法和Function用途一样，只不过入参有俩个变为了三个，其他功能都是类似的
+
+### BinaryOperator
+
+#### 简介
+
+BiFunction的增强版，功能主要和二元运算符相似,主要有俩个方法，maxBy（取俩者最大值）和minBy（取俩者最小值）
+
+#### 代码示例
+
+```
+// 取最大值
+System.out.println(BinaryOperator.maxBy(Integer::compareTo).apply(1, 2));
+// 取最小值
+System.out.println(BinaryOperator.minBy(Integer::compareTo).apply(1, 2));
+```
+
+### DoubleBinaryOperator
+
+#### 简介
+
+BinaryOperator增强版，只对double类型的数据进行操作,参数个数为俩个
+
+#### 代码示例
+
+```java
+// 相加
+DoubleBinaryOperator doubleBinaryOperator = Double::sum;
+System.out.println(doubleBinaryOperator.applyAsDouble(10D, 20D));
+// 	相除
+DoubleBinaryOperator doubleBinaryOperator1 = (left, right) -> left / right;
+System.out.println(doubleBinaryOperator1.applyAsDouble(100D, 20D));
+```
 
 
 
@@ -127,9 +159,9 @@ Function接口的增强版，用法和Function用途一样，只不过入参有�
 
 断言，主要用作判断。经典的使用场景是stream.filter方法，核心方法为test方法
 
-### 方法
+### 方法及代码示例
 
-- test(核心方法)
+#### test(核心方法)
 
   ```
   // 源码
@@ -139,9 +171,9 @@ Function接口的增强版，用法和Function用途一样，只不过入参有�
   System.out.println(predicateString.test("test"));
   ```
 
-- and
+#### and
 
-  ```
+  ```java
   // 源码
   default Predicate<T> and(Predicate<? super T> other) {
       Objects.requireNonNull(other);
@@ -156,9 +188,9 @@ Function接口的增强版，用法和Function用途一样，只不过入参有�
   
   ```
 
-- negate
+#### negate
 
-  ```
+  ```java
   // 源码
   default Predicate<T> negate() {
       return (t) -> !test(t);
@@ -172,9 +204,9 @@ Function接口的增强版，用法和Function用途一样，只不过入参有�
   
   ```
 
-- or
+#### or
 
-  ```
+  ```java
   // 源码
   default Predicate<T> or(Predicate<? super T> other) {
       Objects.requireNonNull(other);
@@ -182,11 +214,14 @@ Function接口的增强版，用法和Function用途一样，只不过入参有�
   }
   // 含义
   // 或者，当俩个条件有一个成立是就返回true
+  Predicate<Integer> predicateInteger1 = i -> i == 5;
+  System.out.println("or或者true--->" + predicateInteger.or(predicateInteger1).test(5));
+  System.out.println("or或者true--->" + predicateInteger.or(predicateInteger1).test(10));
   ```
 
-- isEqual
+#### isEqual
 
-  ```
+  ```java
   // 源码
   static <T> Predicate<T> isEqual(Object targetRef) {
       return (null == targetRef)
@@ -196,18 +231,18 @@ Function接口的增强版，用法和Function用途一样，只不过入参有�
   //含义
   //包含，用法和Object.equals相同，只不过内部做了非空判断
   //示例
-        Predicate<String> predicateEqual = Predicate.isEqual("name");
-          System.out.println("isEqual包含true--->" + predicateEqual.test("name"));
-          System.out.println("isEqual包含false--->" + predicateEqual.test("nme"));
-          System.out.println("isEqual包含('')false--->" + predicateEqual.test(""));
-          System.out.println("isEqual包含(null)false--->" + predicateEqual.test(null));
+  Predicate<String> predicateEqual = Predicate.isEqual("name");
+  System.out.println("isEqual包含true--->" + predicateEqual.test("name"));
+  System.out.println("isEqual包含false--->" + predicateEqual.test("nme"));
+  System.out.println("isEqual包含('')false--->" + predicateEqual.test(""));
+  System.out.println("isEqual包含(null)false--->" + predicateEqual.test(null));
   ```
 
 
 
-## BiPredicate
+### BiPredicate
 
-### 简介
+#### 简介
 
 Predicate的增强版，入参的Predicate的一个变为了俩个，具体的功能都是类似的
 
@@ -217,9 +252,9 @@ Predicate的增强版，入参的Predicate的一个变为了俩个，具体的�
 
 方法主要返回指定泛型的对象，无参
 
-### 方法
+### 方法及代码示例
 
-- get
+#### get
 
 ```
 //源码：
@@ -236,6 +271,32 @@ System.out.println(supplier.get());
 System.out.println(supplierAll.get());
 ```
 
+### BooleanSupplier
+
+#### 简介 
+
+Supplier的增加版，核心方法无参数返回类型为boolean类型的getAsBoolean方法，主要用作判断
+
+#### 方法及代码示例
+
+##### getAsBoolean
+
+```java
+public static void main(String[] args) {
+    // Supplier 增强版 ，判断条件是否相等，可以理解为if的判断条件
+    int age = 10;
+    int age1 = 100;
+    BooleanSupplier booleanSupplier = () -> age == age1;
+    System.out.println(booleanSupplier.getAsBoolean());
+    System.out.println(isSuccess("赵四", "王五"));
+    System.out.println(isSuccess("赵四1", "赵四1"));
+}
+public static boolean isSuccess(final String name, final String string) {
+    BooleanSupplier booleanSupplier = () -> name.equals(string);
+    return booleanSupplier.getAsBoolean();
+}
+```
+
 ## Consumer
 
 ### 简介
@@ -246,7 +307,7 @@ Consumer 消费者，无返回类型
 
 - accept
 
-  ```
+  ```java
   // 源码
   void accept(T t);
   // 含义
@@ -281,7 +342,7 @@ Consumer 消费者，无返回类型
 
 - andThen
 
-  ```
+  ```java
   // 源码
   default Consumer<T> andThen(Consumer<? super T> after) {
       Objects.requireNonNull(after);
@@ -314,10 +375,64 @@ Consumer 消费者，无返回类型
   consumerSet1.andThen(System.out::println).andThen(consumerSetNew).accept(list);
   ```
 
-## BiConsumer
+### DoubleConsumer
 
-### 简介
+#### 简介
+
+DoubleConsumer为consumer增强版，参数为double无返回类型
+
+#### 方法及代码示例
+
+##### accept核心方法
+
+```java
+ List<String> list = new ArrayList<>();
+ DoubleConsumer doubleConsumer = (param) -> list.add(String.valueOf(param * 10D));
+ doubleConsumer.accept(10D);
+ System.out.println("accept---->" + list);
+```
+
+##### andThen
+
+```java
+// 先执行accept方法在执行andThen方法
+doubleConsumer.andThen((t) -> list.add(String.valueOf(t + 10)))
+        .accept(10D);
+System.out.println("andThen---->" + list);
+```
+
+
+
+### BiConsumer
+
+#### 简介
 
 Consumer的增强版，入参由Consumer的一个变为了俩个，
 
+#### 方法及代码示例
+
+##### accept
+
 最经典的用例就是Map.foreach方法
+
+```java
+
+//代码示例
+BiConsumer<Integer, Integer> integerBiConsumer = (v1, v2) -> System.out.println(v1 + v2);
+integerBiConsumer.accept(10, 20);
+Map<Integer, String> map = new HashMap<>(10);
+map.put(10, "20");
+map.put(11, "20");
+map.put(13, "20");
+map.forEach((key, value) -> {
+    System.out.println(key + "---" + value);
+});
+```
+
+##### andThen
+
+```java
+// 先执行accept方法在执行andThen方法
+integerBiConsumer.andThen((v1, v2) -> System.out.println(v1 * v2)).accept(10, 20);
+```
+
