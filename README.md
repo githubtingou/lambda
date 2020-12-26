@@ -39,7 +39,7 @@ map.put(3, "sex");
 map.forEach((key, value) -> System.out.println("key:" + key + "----value:" + value));
 ```
 
-# Stream
+# 函数式接口
 
 ## Function
 
