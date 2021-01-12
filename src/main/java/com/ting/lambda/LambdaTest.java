@@ -40,8 +40,8 @@ public class LambdaTest {
         new Thread(() -> System.out.println("线程创建-lambda")).start();
 
         // 单个参数
-        Function<Integer, String> function = integer -> integer.toString();
-        Function<Integer, String> function1 = (integer) -> integer.toString();
+        Function<Integer, String> function = Object::toString;
+        Function<Integer, String> function1 = Object::toString;
 
 
         // 俩个参数
