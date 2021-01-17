@@ -3,7 +3,7 @@ package com.ting.lambda;
 /**
  * 线程修改
  *
- * @author lishuang
+ * @author ting
  * @version 1.0
  * @date 2021/01/08
  */

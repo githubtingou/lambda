@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * 1.8新特性=时间处理
  *
- * @author lishuang
+ * @author ting
  * @version 1.0
  * @date 2020/12/26
  */

@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * jdk1.8新特性时间工具类
  *
- * @author lishuang
+ * @author ting
  * @version 1.0
  * @date 2020/12/26
  */
