@@ -24,4 +24,5 @@ public class SupplierLearn {
         System.out.println(supplier.get());
         System.out.println(supplierAll.get());
     }
+
 }

@@ -1,9 +1,11 @@
 package com.ting.lambda.consumer;
 
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.stream.Stream;
 
 /**
  * BiConsumer学习
@@ -24,6 +26,12 @@ public class BiConsumerLearn {
             System.out.println(key + "---" + value);
         });
         integerBiConsumer.andThen((v1, v2) -> System.out.println(v1 * v2)).accept(10, 20);
+        Stream<Integer> integerStream = map.keySet().stream();
+        BigDecimal divide = BigDecimal.valueOf(10L).divide(BigDecimal.valueOf(2), 2);
+        Integer integer = integerStream.findFirst().orElse(null);
+        System.out.println(integer);
+
     }
+
 
 }
